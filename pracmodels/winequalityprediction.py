@@ -4,7 +4,7 @@ import matplotlib as plt
 from sklearn.model_selection import train_test_split
 
 #analyze data
-winedataset = pd.read_csv('data\winequality-white.csv', sep=";",names=["fixed acidity","volatile acidity","citric acid","residual sugar","chlorides","free sulfur dioxide","total sulfur dioxide","density","pH","sulphates","alcohol","quality"])
+winedataset = pd.read_csv('data/winequality-white.csv', sep=";",names=["fixed acidity","volatile acidity","citric acid","residual sugar","chlorides","free sulfur dioxide","total sulfur dioxide","density","pH","sulphates","alcohol","quality"])
 winedataset.dropna(inplace=True)
 
 
@@ -41,9 +41,6 @@ model.fit(x_train,y_train,epochs=100)
 print("\nEvaluating Model Preformance")
 predictions = model.evaluate(x_test,x_train,batch_size = 128)
 print("Test Loss, Test Acc: ", predictions)
-
-
-
 
 
 
