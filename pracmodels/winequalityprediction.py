@@ -13,6 +13,11 @@ Y=  winedataset[['quality']]
 
 x_train,x_test,y_train,y_test= train_test_split(X,Y, test_size=0.3)
 
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+scaler.fit(x_train)
+x_train = scaler.transform(x_train)
+x_test = scaler.transform(x_test)
 
 #Neural Network implemntation
 #Tensorflow Attempt!!!!!
