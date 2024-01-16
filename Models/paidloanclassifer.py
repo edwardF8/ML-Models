@@ -31,8 +31,12 @@ for feature in features_to_encode:
 
 X = df.drop(columns=["loan_status"])
 #we act gonna convert all the ones that are fully paid to 1, and the other to 0
-Y = (df[['loan_status']] == 'Full Paid')
-print(Y.describe())
+Y = df[['loan_status']]
+Y.loc[Y['loan_status'] != 'Fully Paid', 'loan_status'] = 0
+Y.loc[Y['loan_status'] == 'Fully Paid', 'loan_status'] = 1
+Y['loan_status'] = Y['loan_status'].astype(int)
+print(X.info())
+print(Y.info())
 from sklearn.model_selection import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(X,Y,test_size=0.3)
 
@@ -41,18 +45,24 @@ scaler  = MinMaxScaler()
 x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test)
 
-'''
+
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.layers import Dense, Dropout, InputLayer
 from tensorflow.keras.callbacks import EarlyStopping
 early_stop = EarlyStopping(monitor='val_loss', mode='min', verbose =1, patience=25)
 model = Sequential([
-    Dense(58,activation='relu'),
+    In/
+    Dense(58),
     Dropout(0.3),
-    Dense(25,activation='relu'),
+    Dense(25,activation='sigmoid'),
     Dropout(0.3),
-    Dense(10,activation='relu'),
+    Dense(10,activation='tanh'),
     Dropout(0.3),
     Dense(1,activation='sigmoid')
 ])
-'''
+model.compile(loss='binary_crossentropy', optimizer='adam')
+model.fit(x=x_train, y=y_train,epochs=400, batch_size=100, validation_data=(x_test, y_test), callbacks=[early_stop])
+
+loss = pd.DataFrame(model.history.history)
+loss.plot()
+plt.show()
