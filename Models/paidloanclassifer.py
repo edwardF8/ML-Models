@@ -43,18 +43,23 @@ scaler  = MinMaxScaler()
 x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test)
 
-'''
+
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.layers import Dense, Dropout, InputLayer
 from tensorflow.keras.callbacks import EarlyStopping
 early_stop = EarlyStopping(monitor='val_loss', mode='min', verbose =1, patience=25)
 model = Sequential([
-    Dense(58,activation='relu'),
+    Dense(58),
     Dropout(0.3),
-    Dense(25,activation='relu'),
+    Dense(25,activation='sigmoid'),
     Dropout(0.3),
-    Dense(10,activation='relu'),
+    Dense(10,activation='tanh'),
     Dropout(0.3),
     Dense(1,activation='sigmoid')
 ])
-'''
+model.compile(loss='binary_crossentropy', optimizer='adam')
+model.fit(x=x_train, y=y_train,epochs=400, batch_size=100, validation_data=(x_test, y_test), callbacks=[early_stop])
+
+loss = pd.DataFrame(model.history.history)
+loss.plot()
+plt.show()
